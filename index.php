@@ -26,7 +26,7 @@ if (CModule::IncludeModule("iblock")) {
     // если различия есть, сохраняем новый файл
     $elem = new CIBlockElement;
 
-    $PROP = array();
+    $PROP = Array();
 
     // свойству с кодом file_code присваиваем файл
     $PROP['file_code'] = CFile::MakeFileArray($fileNew);
