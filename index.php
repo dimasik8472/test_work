@@ -17,6 +17,14 @@ if (CModule::IncludeModule("iblock")) {
 
   // якобы получаем файл из свойства элемента инфоблока
   $fileOld = $_SERVER["DOCUMENT_ROOT"]."/upload/test2.csv";
+
+  // как я понимаю, получение данных из свойства элемента инфоблока происходит подобным образом
+  // $fileOld = $elem->GetProperty(
+  //   1,
+  //   8,
+  //   Array("sort"=>"asc"),
+  //   Array("CODE"=>"file_code")
+  // );
   
   // сравниваем файлы как две строки
   if (file_get_contents($fileNew) === file_get_contents($fileOld)) {
