@@ -10,21 +10,27 @@ $APPLICATION->SetTitle("Главная страница");
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 CModule::IncludeModule('iblock');
 
+$elem = new CIBlockElement;
+
 // проверим установлен ли модуль и получим блок с кодом $BID и типом catalog
 if (CModule::IncludeModule("iblock")) {
   // новый файл
   $fileNew = $_SERVER["DOCUMENT_ROOT"]."/upload/test.csv";
 
-  // якобы получаем файл из свойства элемента инфоблока
-  $fileOld = $_SERVER["DOCUMENT_ROOT"]."/upload/test2.csv";
+  // ищем свойство, в котором хранится старый файл
+  $fileInfo = $elem->GetProperty(
+    1,
+    8,
+    Array("sort"=>"asc"),
+    Array("CODE"=>"file_code")
+  );
+  
+  $fileId = $fileInfo->GetNext();
 
-  // как я понимаю, получение данных из свойства элемента инфоблока происходит подобным образом
-  // $fileOld = $elem->GetProperty(
-  //   1,
-  //   8,
-  //   Array("sort"=>"asc"),
-  //   Array("CODE"=>"file_code")
-  // );
+  // получаем путь к старому файлу
+  $fileUrl = CFile::GetPath($fileId['VALUE']);
+  
+  $fileOld = $_SERVER["DOCUMENT_ROOT"] . $fileUrl;
   
   // сравниваем файлы как две строки
   if (file_get_contents($fileNew) === file_get_contents($fileOld)) {
@@ -32,7 +38,6 @@ if (CModule::IncludeModule("iblock")) {
     echo 'изменений нет';
   } else {
     // если различия есть, сохраняем новый файл
-    $elem = new CIBlockElement;
 
     $PROP = Array();
 
